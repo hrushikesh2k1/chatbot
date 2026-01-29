@@ -1,0 +1,44 @@
+{
+  "qa_pairs": [
+    {
+      "keywords": ["hello", "hi", "hey", "greetings"],
+      "answer": "Hello! How can I help you today?"
+    },
+    {
+      "keywords": ["name", "who are you", "what are you"],
+      "answer": "I'm an AI assistant here to help answer your questions!"
+    },
+    {
+      "keywords": ["weather", "temperature", "forecast"],
+      "answer": "I don't have access to real-time weather data, but you can check weather.com or your local weather service for current conditions."
+    },
+    {
+      "keywords": ["python", "programming", "code"],
+      "answer": "Python is a versatile programming language! Are you looking to learn Python or need help with a specific coding problem?"
+    },
+    {
+      "keywords": ["time", "what time", "clock"],
+      "answer": "I can't tell the exact time, but you can check your device's clock!"
+    },
+    {
+      "keywords": ["help", "assist", "support"],
+      "answer": "I'm here to help! You can ask me questions and I'll do my best to provide helpful answers."
+    },
+    {
+      "keywords": ["thanks", "thank you", "appreciate"],
+      "answer": "You're welcome! Feel free to ask if you need anything else."
+    },
+    {
+      "keywords": ["bye", "goodbye", "see you"],
+      "answer": "Goodbye! Have a great day!"
+    },
+    {
+      "keywords": ["joke", "funny", "laugh"],
+      "answer": "Why did the programmer quit his job? Because he didn't get arrays! 😄"
+    },
+    {
+      "keywords": ["mongodb", "database"],
+      "answer": "MongoDB is a popular NoSQL database that stores data in flexible, JSON-like documents. It's great for scalable applications!"
+    }
+  ]
+}
