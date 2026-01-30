@@ -26,7 +26,8 @@ jobs:
       - name: test
         run: |
           pytest tests/
-  build:
+  build: 
+    needs: test
     runs-on: ubuntu-latest
     env:
       MONGO_URI: ${{ secrets.MONGO_URI }}
