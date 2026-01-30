@@ -2,9 +2,11 @@ import requests
 
 BASE_URL = "http://127.0.0.1:5000"
 
+
 def test_health():
     r = requests.get(f"{BASE_URL}/health")
     assert r.status_code == 200
+
 
 def test_generate():
     payload = {"question": "unit test"}

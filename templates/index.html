@@ -67,7 +67,7 @@
             padding: 20px;
             overflow-y: auto;
             background: #e5ddd5;
-            background-image: 
+            background-image:
                 repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.1) 35px, rgba(255,255,255,.1) 70px);
         }
 
@@ -259,9 +259,9 @@
         </div>
 
         <div class="chat-input-container">
-            <input 
-                type="text" 
-                id="userInput" 
+            <input
+                type="text"
+                id="userInput"
                 placeholder="Type a message..."
                 autocomplete="off"
             >
@@ -277,17 +277,17 @@
 
         function getCurrentTime() {
             const now = new Date();
-            return now.toLocaleTimeString('en-US', { 
-                hour: '2-digit', 
+            return now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
                 minute: '2-digit',
-                hour12: true 
+                hour12: true
             });
         }
 
         function addMessage(text, isUser, source = null) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
-            
+
             let sourceBadge = '';
             if (source && !isUser) {
                 const sourceLabels = {
@@ -297,14 +297,14 @@
                 };
                 sourceBadge = `<span class="source-badge">${sourceLabels[source] || source}</span>`;
             }
-            
+
             messageDiv.innerHTML = `
                 <div class="message-bubble">
                     ${text}
                     <div class="message-time">${getCurrentTime()}${sourceBadge}</div>
                 </div>
             `;
-            
+
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
@@ -320,23 +320,23 @@
 
         async function sendMessage() {
             const question = userInput.value.trim();
-            
+
             if (!question) return;
-            
+
             // Clear welcome message if exists
             const welcomeMsg = document.querySelector('.welcome-message');
             if (welcomeMsg) {
                 welcomeMsg.remove();
             }
-            
+
             // Add user message
             addMessage(question, true);
             userInput.value = '';
             sendBtn.disabled = true;
-            
+
             // Show typing indicator
             showTyping();
-            
+
             try {
                 const response = await fetch('/ask', {
                     method: 'POST',
@@ -345,9 +345,9 @@
                     },
                     body: JSON.stringify({ question })
                 });
-                
+
                 const data = await response.json();
-                
+
                 // Hide typing and add bot response
                 hideTyping();
                 addMessage(data.answer, false, data.source);
@@ -362,7 +362,7 @@
 
         // Event listeners
         sendBtn.addEventListener('click', sendMessage);
-        
+
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 sendMessage();
