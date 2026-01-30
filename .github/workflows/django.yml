@@ -3,18 +3,18 @@ name: CI
 on:
   push:
     branches: [ "main" ]
-    paths-ignore: [".github/workflows"]
+    paths-ignore: [".github/workflows/**"]
   pull_request:
     branches: [ "main" ]
-    paths-ignore: [".github/workflows"]
+    paths-ignore: [".github/workflows/**"]
   workflow_dispatch:
 
-env:
-  MONGO_URI: ${{ secrets.MONGO_URI }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      MONGO_URI: ${{ secrets.MONGO_URI }}
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python
