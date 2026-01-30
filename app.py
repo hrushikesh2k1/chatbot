@@ -11,7 +11,7 @@ import os
 app = Flask(__name__)
 
 # MongoDB setup
-client = os.getenv('MONGO_URI')
+client = MongoClient(os.getenv("MONGO_URI"))
 db = client['chatbot_db']
 cache_collection = db['response_cache']
 
