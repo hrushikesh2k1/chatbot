@@ -1,16 +1,15 @@
-import requests
-
-BASE_URL = "http://127.0.0.1:5000"
-
+from app import app
 
 def test_health():
-    r = requests.get(f"{BASE_URL}/health")
-    assert r.status_code == 200
+    client = app.test_client()
+    response = client.get("/health")
+    assert response.status_code == 200
 
 
 def test_generate():
+    client = app.test_client()
     payload = {"question": "unit test"}
-    r = requests.post(f"{BASE_URL}/ask", json=payload)
-    assert r.status_code == 200
-    data = r.json()
+    response = client.post("/ask", json=payload)
+    assert response.status_code == 200
+    data = response.get_json()
     assert "answer" in data
