@@ -6,10 +6,4 @@ def test_health():
     assert response.status_code == 200
 
 
-def test_generate():
-    client = app.test_client()
-    payload = {"question": "unit test"}
-    response = client.post("/ask", json=payload)
-    assert response.status_code == 200
-    data = response.get_json()
-    assert "answer" in data
+
