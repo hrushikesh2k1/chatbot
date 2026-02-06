@@ -162,7 +162,10 @@ def cache_response(question, answer):
 @app.route("/")
 def index():
     return render_template("index.html")
-
+    
+@app.route("/health")
+def health():
+    return jsonify({"status": "ok"}), 200
 
 @app.route("/ask", methods=["POST"])
 def ask():
