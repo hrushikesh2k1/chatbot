@@ -28,6 +28,7 @@ jobs:
           export PYTHONPATH=.
           pytest -vv
   Run: 
+    environment: development
     needs: build-and-test
     runs-on: ubuntu-latest
     env:
