@@ -3,14 +3,14 @@ name: CI-CD Pipeline
 on:
   push:
     branches:
-      - feature
-      - integration
-      - main
+      - "feature*"
+      - "integration*"
+      - "main*"
     paths-ignore: [".github/workflows/**"]
   pull_request:
     branches:
-      - integration
-      - main
+      - "integration*"
+      - "main*"
     paths-ignore: [".github/workflows/**"]
 
 jobs:
