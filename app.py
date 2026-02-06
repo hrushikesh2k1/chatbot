@@ -169,32 +169,29 @@ def health():
 
 @app.route("/ask", methods=["POST"])
 def ask():
-    data = request.json
+    data = request.get_json(silent=True) or {}
     question = data.get("question", "").strip()
 
     if not question:
         return jsonify({"answer": "Please ask a question!"})
 
-    # Step 1: Check knowledge base for keyword match
     answer = find_matching_answer(question)
     source = "knowledge_base"
 
-    # Step 2: Check MongoDB cache
     if not answer:
         answer = get_cached_response(question)
         if answer:
             source = "cache"
 
-    # Step 3: Generate mock AI response and cache it
     if not answer:
         answer = generate_mock_ai_response(question)
         source = "ai_generated"
 
-        # Cache the AI-generated response for future use
         if answer and answer != "I am still learning":
             cache_response(question, answer)
 
     return jsonify({"answer": answer, "source": source})
+
 
 
 if __name__ == "__main__":
