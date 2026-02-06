@@ -1,4 +1,4 @@
-name: chatbot CI
+name: Feature branch CI
 
 on:
   push:
