@@ -2,10 +2,7 @@ name: chatbot CI
 
 on:
   push:
-    branches: [ "main" ]
-    paths-ignore: [".github/workflows/**"]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "feature" ]
     paths-ignore: [".github/workflows/**"]
   workflow_dispatch:
 
