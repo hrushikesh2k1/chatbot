@@ -28,7 +28,7 @@ jobs:
       - name: test
         run: |
           pip install pytest
-          pytest tests/
+          pytest -vv
   Run: 
     needs: build-and-test
     runs-on: ubuntu-latest
