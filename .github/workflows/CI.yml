@@ -28,6 +28,7 @@ jobs:
       - name: test
         run: |
           pip install pytest
+          export PYTHONPATH=.
           pytest -vv
   Run: 
     needs: build-and-test
