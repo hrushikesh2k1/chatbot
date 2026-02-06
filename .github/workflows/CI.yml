@@ -3,15 +3,16 @@ name: CI-CD Pipeline
 on:
   push:
     branches:
-      - feature
-      - integration
-      - main
+      - "feature"
+      - "integration"
+      - "main"
     paths-ignore: [".github/workflows/**"]
   pull_request:
     branches:
-      - integration
-      - main
+      - "integration"
+      - "main"
     paths-ignore: [".github/workflows/**"]
+  workflow_dispatch:
 
 jobs:
   build-test:
@@ -28,10 +29,14 @@ jobs:
 
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run tests
-        run: pytest
+        run: |
+          pip install pytest
+          export PYTHONPATH=.
+          pytest tests/
 
   deploy-dev:
     if: github.ref == 'refs/heads/feature'
@@ -114,9 +119,10 @@ jobs:
       - name: Run application
         run: |
           python app.py &
-          sleep 10
+          sleep 9
       - name: Test API
         run: |
           curl -X POST http://127.0.0.1:5000/ask \
           -H "Content-Type: application/json" \
           -d '{"question":"ci test"}'
+
