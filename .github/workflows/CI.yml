@@ -1,11 +1,8 @@
-name: chatbot CI
+name: Feature branch CI
 
 on:
   push:
-    branches: [ "main" ]
-    paths-ignore: [".github/workflows/**"]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "feature" ]
     paths-ignore: [".github/workflows/**"]
   workflow_dispatch:
 
@@ -31,6 +28,7 @@ jobs:
           export PYTHONPATH=.
           pytest -vv
   Run: 
+    environment: development
     needs: build-and-test
     runs-on: ubuntu-latest
     env:
