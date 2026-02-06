@@ -1,24 +1,8 @@
-<<<<<<< HEAD
 name: Feature branch CI
 
 on:
   push:
     branches: [ "feature" ]
-=======
-name: CI-CD Pipeline
-
-on:
-  push:
-    branches:
-      - feature
-      - integration
-      - main
-    paths-ignore: [".github/workflows/**"]
-  pull_request:
-    branches:
-      - integration
-      - main
->>>>>>> d5c6c59c3613ae2902203e1cdbfea5fcd2bb06c9
     paths-ignore: [".github/workflows/**"]
 
 jobs:
@@ -37,7 +21,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-<<<<<<< HEAD
           
       - name: test
         run: |
@@ -47,15 +30,6 @@ jobs:
   Run: 
     environment: development
     needs: build-and-test
-=======
-
-      - name: Run tests
-        run: pytest
-
-  deploy-dev:
-    if: github.ref == 'refs/heads/feature'
-    needs: build-test
->>>>>>> d5c6c59c3613ae2902203e1cdbfea5fcd2bb06c9
     runs-on: ubuntu-latest
     environment: development
     env:
