@@ -350,16 +350,8 @@ http://localhost:8080/zap
 | Command Injection | ✅ | ❌ | ✅ |
 
 ---
+<img width="1188" height="723" alt="image" src="https://github.com/user-attachments/assets/5e2a92bc-0099-4cb1-87b7-1c953278d73a" />
+<img width="626" height="112" alt="image" src="https://github.com/user-attachments/assets/206033d9-ff04-4089-be60-8d08860346c2" />
+<img width="883" height="721" alt="image" src="https://github.com/user-attachments/assets/0675c3a0-9bd1-41aa-99f2-7091959455c5" />
 
-## 🛠️ What to Fix Next
-
-- Use parameterized SQL queries
-- Remove `shell=True`
-- Move secrets to environment variables
-- Upgrade dependencies
-- Disable debug mode
-
-Re-run scans and observe improvements 🚀
-
----
 
