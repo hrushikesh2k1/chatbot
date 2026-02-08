@@ -6,12 +6,12 @@ on:
       - "feature"
       - "integration"
       - "main"
-    paths-ignore: [".github/workflows/**"]
+    paths-ignore: [".github/workflows/**", "README.md"]
   pull_request:
     branches:
       - "integration"
       - "main"
-    paths-ignore: [".github/workflows/**"]
+    paths-ignore: [".github/workflows/**","README.md"]
   workflow_dispatch:
 
 jobs:
