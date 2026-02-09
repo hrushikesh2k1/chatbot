@@ -239,3 +239,8 @@ jobs:
 ```
 
 The OWASP Zap reports are download as part of the workflow on to the self hosted runner.
+
+```bash
+sudo chown -R $USER:$USER $GITHUB_WORKSPACE || true
+```
+Give the current runner user ownership of all files inside the GitHub workspace so permission errors don’t happen.
