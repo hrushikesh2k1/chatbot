@@ -110,7 +110,7 @@ jobs:
           -v $(pwd):/zap/wrk:rw \
           ghcr.io/zaproxy/zaproxy:stable \
           zap-baseline.py \
-          -t http://127.0.0.1:5000 \
+          -t http://10.0.2.15:5000 \
           -r zap-report.html
 
       - name: Upload ZAP Report
