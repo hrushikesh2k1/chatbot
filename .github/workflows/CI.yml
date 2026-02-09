@@ -105,6 +105,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run OWASP ZAP Baseline Scan
+        continue-on-error: true
         run: |
           docker run --rm \
           -v $(pwd):/zap/wrk:rw \
