@@ -59,7 +59,7 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v2
         with:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_HOST_URL: http://10.0.2.15:9000
 
   SCA:
     name: SCAN scan (Dependencies)
