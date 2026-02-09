@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 
-#app name
 app = Flask(__name__)
 
 # MongoDB setup
