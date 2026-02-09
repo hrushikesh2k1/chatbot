@@ -92,11 +92,37 @@ jobs:
       - name: Run dependency scan
         run: |
           pip-audit -r requirements.txt
+  dast:
+    name: DAST Scan (OWASP ZAP)
+    runs-on: self-hosted
+    needs: SCA   # or deploy-staging depending on where app runs
+
+    steps:
+      - name: Fix workspace permissions
+        run: sudo chown -R $USER:$USER $GITHUB_WORKSPACE || true
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run OWASP ZAP Baseline Scan
+        run: |
+          docker run --rm \
+          -v $(pwd):/zap/wrk:rw \
+          ghcr.io/zaproxy/zaproxy:stable \
+          zap-baseline.py \
+          -t http://127.0.0.1:5000 \
+          -r zap-report.html
+
+      - name: Upload ZAP Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-report
+          path: zap-report.html
 
 
   deploy-dev:
     if: github.ref == 'refs/heads/feature'
-    needs: SCA
+    needs: dast
     runs-on: self-hosted
     environment: development
     env:
@@ -126,7 +152,7 @@ jobs:
 
   deploy-staging:
     if: github.ref == 'refs/heads/integration'
-    needs: SCA
+    needs: dast
     runs-on: self-hosted
     environment: staging
     env:
@@ -157,7 +183,7 @@ jobs:
 
   deploy-prod:
     if: github.ref == 'refs/heads/main'
-    needs: SCA
+    needs: dast
     runs-on: self-hosted
     environment: production
     env:
