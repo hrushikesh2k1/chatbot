@@ -85,7 +85,9 @@ jobs:
       
       - name: Install pip-audit
         run: |
-          pip install pip-audit
+          sudo apt-get install pipx -y
+          pipx ensurepath
+          pipx install pip-audit
 
       - name: Run dependency scan
         run: |
@@ -169,7 +171,7 @@ jobs:
         run: sudo chown -R $USER:$USER $GITHUB_WORKSPACE || true
       - name: checkout code
         uses: actions/checkout@v4
-        
+
       - name: Set up Python
         uses: actions/setup-python@v3
       - name: Install Dependencies
