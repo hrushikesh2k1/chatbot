@@ -57,12 +57,6 @@ jobs:
         run: |
           pip-audit -r requirements.txt
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Run SCA
-        run: echo "Running Software Composition Analysis (SCA) for security vulnerabilities"
 
   deploy-dev:
     if: github.ref == 'refs/heads/feature'
