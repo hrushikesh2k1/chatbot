@@ -6,12 +6,12 @@ on:
       - "feature"
       - "integration"
       - "main"
-    paths-ignore: [".github/workflows/**"]
+    paths-ignore: [".github/workflows/**", "README.md"]
   pull_request:
     branches:
       - "integration"
       - "main"
-    paths-ignore: [".github/workflows/**"]
+    paths-ignore: [".github/workflows/**", "README.md"]
   workflow_dispatch:
 
 jobs:
@@ -37,6 +37,32 @@ jobs:
           pip install pytest
           export PYTHONPATH=.
           pytest tests/
+  SCA:
+    name: SCAN scan (Dependencies)
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+      
+      - name: set up python
+        uses: actions/checkout@v4
+        with:
+          python-version: "3.11"
+      
+      - name: Install pip-audit
+        run: |
+          pip install pip-audit
+
+      - name: Run dependency scan
+        run: |
+          pip-audit -r requirements.txt
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run SCA
+        run: echo "Running Software Composition Analysis (SCA) for security vulnerabilities"
 
   deploy-dev:
     if: github.ref == 'refs/heads/feature'
