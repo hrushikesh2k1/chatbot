@@ -1,5 +1,4 @@
-Recent developments are done in feature branch.....
-# AppSec - SAST, SCA & DAST
+See the recent developments in feature branch.....
 
 ## 🏗️ Project Structure
 
@@ -14,7 +13,6 @@ chatbot/
 
 ---
 
-## Step 1: Application
 
 ### app.py
 ```python
@@ -231,128 +229,12 @@ requests
 pre-commit
 ```
 
----
+## Run the app
 
-## 🔍 Step 3: SAST with SonarQube
-
-### Start SonarQube
-```bash
-docker run -d -p 9000:9000 --name sonarqube sonarqube:9.9-community
+```python
+python3 app.py
 ```
+Runs on every host=0.0.0.0 port=5000
 
-Open http://localhost:9000  
-Login: `admin / admin`
-
----
-
-### sonar-project.properties
-```properties
-sonar.projectKey=chatbot
-sonar.projectName=chatbot
-sonar.sources=.
-sonar.language=py
-sonar.python.version=3
-```
-
----
-
-### Install Sonar Scanner
-
-Follow the Instructions provided here:
-
-https://docs.sonarsource.com/sonarqube-server/10.8/analyzing-source-code/scanners/sonarscanner
-
-### Run Scan
-```bash
-sonar-scanner -Dsonar.host.url=http://localhost:9000 -Dsonar.login=<TOKEN>
-```
-
-### Expected Findings
-- Hardcoded secrets
-- SQL injection risks
-- Command injection risks
-- Debug mode enabled
-
----
-
-## Step 4: SCA with pip-audit
-
-```bash
-pip install pip-audit
-pip-audit -r requirements.txt
-```
-
-### Expected Findings
-- Vulnerable Flask version
-- Vulnerable Requests version
-
----
-
-## 🌐 Step 5: Run the App
-
-```bash
-pip install -r requirements.txt
-python app.py
-```
-
-Application runs at http://localhost:5000
-
----
-
-## 🕷️ Step 6: DAST with OWASP ZAP
-
-Run the Application
-
-```bash
-python app.py
-```
-
-Open in browser:
-
-```
-localhost:5000
-```
-
-Scan target by running ZAP from cli
-
-```
-docker run --rm \                                                                                      ✔  8509  15:33:58
-  -v "$(pwd):/zap/wrk" \
-  -t ghcr.io/zaproxy/zaproxy:stable \
-  zap-baseline.py \
-  -t http://localhost:5000 \
-  -r zap-report.html
-```
-
-Scan target by running ZAP from UI
-
-```
-docker run -it \                                                                             SIGINT(2) ↵  8509  15:36:05
-  -p 8080:8080 \
-  ghcr.io/zaproxy/zaproxy:stable \
-  zap-webswing.sh
-```
-
-Open Zap UI:
-
-```
-http://localhost:8080/zap
-```
-
----
-
-## Compare Results
-
-| Issue | SAST | SCA | DAST |
-|----|----|----|----|
-| Hardcoded Secret | ✅ | ❌ | ❌ |
-| Vulnerable Library | ❌ | ✅ | ❌ |
-| SQL Injection | ✅ | ❌ | ✅ |
-| Command Injection | ✅ | ❌ | ✅ |
-
----
-<img width="1188" height="723" alt="image" src="https://github.com/user-attachments/assets/5e2a92bc-0099-4cb1-87b7-1c953278d73a" />
-<img width="626" height="112" alt="image" src="https://github.com/user-attachments/assets/206033d9-ff04-4089-be60-8d08860346c2" />
-<img width="883" height="721" alt="image" src="https://github.com/user-attachments/assets/0675c3a0-9bd1-41aa-99f2-7091959455c5" />
 
 
