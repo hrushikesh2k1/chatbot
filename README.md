@@ -234,7 +234,7 @@ pre-commit
 ```python
 python3 app.py
 ```
-Runs on every host=0.0.0.0 port=5000
+Runs on host=0.0.0.0 port=5000
 
 
 
