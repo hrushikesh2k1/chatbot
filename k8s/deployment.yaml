@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: chatbot
-        image: hrushikesh2k1/chatbot:latest
+        image: hrushikesh2k1/chatbot
         ports:
         - containerPort: 5000
 ---
