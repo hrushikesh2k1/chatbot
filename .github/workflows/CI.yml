@@ -6,19 +6,22 @@ on:
       - "feature"
       - "integration"
       - "main"
-    paths-ignore: [".github/workflows/**"]
+    paths-ignore: [".github/workflows/**", "README.md"]
   pull_request:
     branches:
       - "integration"
       - "main"
-    paths-ignore: [".github/workflows/**"]
+    paths-ignore: [".github/workflows/**", "README.md"]
   workflow_dispatch:
 
 jobs:
   build-test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
+      - name: Fix workspace permissions
+        run: sudo chown -R $USER:$USER $GITHUB_WORKSPACE || true
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -38,16 +41,96 @@ jobs:
           export PYTHONPATH=.
           pytest tests/
 
+  sonarqube-sast:
+    name: SonarQube SAST Scan
+    runs-on: self-hosted
+    needs: build-test
+
+    steps:
+      - name: Fix workspace permissions
+        run: sudo chown -R $USER:$USER $GITHUB_WORKSPACE || true
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: http://10.0.2.15:9000
+
+  SCA:
+    name: SCAN scan (Dependencies)
+    runs-on: self-hosted
+    needs: sonarqube-sast
+    steps:
+      - name: Fix workspace permissions
+        run: sudo chown -R $USER:$USER $GITHUB_WORKSPACE || true
+        
+      - name: checkout code
+        uses: actions/checkout@v4
+      
+      - name: set up python
+        uses: actions/checkout@v4
+        with:
+          python-version: "3.11"
+      
+      - name: Install pip-audit
+        run: |
+          sudo apt-get install pipx -y
+          pipx ensurepath
+          pipx install pip-audit
+
+      - name: Run dependency scan
+        run: |
+          pip-audit -r requirements.txt
+  dast:
+    name: DAST Scan (OWASP ZAP)
+    runs-on: self-hosted
+    needs: SCA   # or deploy-staging depending on where app runs
+
+    steps:
+      - name: Fix workspace permissions
+        run: sudo chown -R $USER:$USER $GITHUB_WORKSPACE || true
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run OWASP ZAP Baseline Scan
+        continue-on-error: true
+        run: |
+          docker run --rm \
+          -v $(pwd):/zap/wrk:rw \
+          ghcr.io/zaproxy/zaproxy:stable \
+          zap-baseline.py \
+          -t http://10.0.2.15:5000 \
+          -r zap-report.html
+
+      - name: Upload ZAP Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-report
+          path: zap-report.html
+
+
   deploy-dev:
     if: github.ref == 'refs/heads/feature'
-    needs: build-test
-    runs-on: ubuntu-latest
+    needs: dast
+    runs-on: self-hosted
     environment: development
     env:
       MONGO_URI: ${{ secrets.MONGO_URI }}
     steps:
-      - name: Deploy to Dev
-        run: echo "Deploying to Development environment"
+      - name: Fix workspace permissions
+        run: sudo chown -R $USER:$USER $GITHUB_WORKSPACE || true
 
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -70,8 +153,8 @@ jobs:
 
   deploy-staging:
     if: github.ref == 'refs/heads/integration'
-    needs: build-test
-    runs-on: ubuntu-latest
+    needs: dast
+    runs-on: self-hosted
     environment: staging
     env:
       MONGO_URI: ${{ secrets.MONGO_URI }}
@@ -79,7 +162,9 @@ jobs:
     steps:
       - name: Deploy to Staging
         run: echo "Deploying to Staging"
-        
+      - name: Fix workspace permissions
+        run: sudo chown -R $USER:$USER $GITHUB_WORKSPACE || true
+
       - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v3
@@ -99,8 +184,8 @@ jobs:
 
   deploy-prod:
     if: github.ref == 'refs/heads/main'
-    needs: build-test
-    runs-on: ubuntu-latest
+    needs: dast
+    runs-on: self-hosted
     environment: production
     env:
       MONGO_URI: ${{ secrets.MONGO_URI }}
@@ -108,8 +193,12 @@ jobs:
     steps:
       - name: Deploy to Production
         run: echo "Deploying to Production"
+  
+      - name: Fix workspace permissions
+        run: sudo chown -R $USER:$USER $GITHUB_WORKSPACE || true
+      - name: checkout code
+        uses: actions/checkout@v4
 
-      - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v3
       - name: Install Dependencies
