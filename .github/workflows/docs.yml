@@ -1,0 +1,40 @@
+name: Auto Documentation Generator
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Dependencies
+      run: |
+        pip install pydoc-markdown diagrams flasgger graphviz
+
+    - name: Generate Code Docs
+      run: |
+        pydoc-markdown
+
+    - name: Generate Architecture Diagram
+      run: |
+        python architecture.py
+
+    - name: Commit Updated Docs
+      run: |
+        git config --global user.name "doc-bot"
+        git config --global user.email "doc-bot@users.noreply.github.com"
+        git add .
+        git commit -m "Auto update documentation" || echo "No changes"
+        git push

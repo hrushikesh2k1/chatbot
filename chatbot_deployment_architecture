@@ -1,0 +1,35 @@
+digraph "Chatbot Deployment Architecture" {
+	graph [fontcolor="#2D3436" fontname="Sans-Serif" fontsize=15 label="Chatbot Deployment Architecture" nodesep=0.60 pad=2.0 rankdir=LR ranksep=0.75 splines=ortho]
+	node [fixedsize=true fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13 height=1.4 imagescale=true labelloc=b shape=box style=rounded width=1.4]
+	edge [color="#7B8894"]
+	"4356157368c74feb81945b65eed4d0fc" [label=Client height=1.9 image="C:\Users\arunj\Desktop\chatbot\venv\lib\site-packages\resources/onprem/client\users.png" shape=none]
+	subgraph "cluster_Azure VNet" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Azure VNet" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		a7db8f800c824e14b819fa13b879e835 [label="Chatbot VNet" height=1.9 image="C:\Users\arunj\Desktop\chatbot\venv\lib\site-packages\resources/azure/network\virtual-networks.png" shape=none]
+		subgraph "cluster_AKS Nodepool" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="AKS Nodepool" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			f1dac245ef3a4f50b8a2747a31526685 [label="Worker Node" height=1.9 image="C:\Users\arunj\Desktop\chatbot\venv\lib\site-packages\resources/azure/compute\vm.png" shape=none]
+			subgraph "cluster_Kubernetes Cluster" {
+				graph [bgcolor="#ECE8F6" fontname="Sans-Serif" fontsize=12 label="Kubernetes Cluster" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+				"801a8cfd4d52472eb2dc5928f2de4c9c" [label="NGINX Ingress" height=1.9 image="C:\Users\arunj\Desktop\chatbot\venv\lib\site-packages\resources/k8s/network\ing.png" shape=none]
+				subgraph "cluster_Chatbot Deployment" {
+					graph [bgcolor="#FDF7E3" fontname="Sans-Serif" fontsize=12 label="Chatbot Deployment" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+					"07d6e64909304d78a773adda7828a91b" [label="Flask Pod" height=1.9 image="C:\Users\arunj\Desktop\chatbot\venv\lib\site-packages\resources/k8s/compute\pod.png" shape=none]
+					f4c77927b5cc453295868b8d119e0c70 [label="Chatbot Container" height=1.9 image="C:\Users\arunj\Desktop\chatbot\venv\lib\site-packages\resources/onprem/container\docker.png" shape=none]
+				}
+				subgraph "cluster_MongoDB StatefulSet" {
+					graph [bgcolor="#FDF7E3" fontname="Sans-Serif" fontsize=12 label="MongoDB StatefulSet" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+					b24b7fa594dc4f5b8ca3c15c5c5ede3b [label=MongoDB height=1.9 image="C:\Users\arunj\Desktop\chatbot\venv\lib\site-packages\resources/onprem/database\mongodb.png" shape=none]
+					b663449e55ea481aa3ca1541aed55069 [label="Persistent Volume" height=1.9 image="C:\Users\arunj\Desktop\chatbot\venv\lib\site-packages\resources/k8s/storage\pv.png" shape=none]
+				}
+			}
+		}
+	}
+	"4356157368c74feb81945b65eed4d0fc" -> "801a8cfd4d52472eb2dc5928f2de4c9c" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"801a8cfd4d52472eb2dc5928f2de4c9c" -> "07d6e64909304d78a773adda7828a91b" [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"07d6e64909304d78a773adda7828a91b" -> f4c77927b5cc453295868b8d119e0c70 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	f4c77927b5cc453295868b8d119e0c70 -> b24b7fa594dc4f5b8ca3c15c5c5ede3b [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	b24b7fa594dc4f5b8ca3c15c5c5ede3b -> b663449e55ea481aa3ca1541aed55069 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"07d6e64909304d78a773adda7828a91b" -> f1dac245ef3a4f50b8a2747a31526685 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	f1dac245ef3a4f50b8a2747a31526685 -> a7db8f800c824e14b819fa13b879e835 [dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+}

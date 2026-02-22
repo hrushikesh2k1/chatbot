@@ -1,0 +1,8 @@
+loaders:
+  - type: python
+    search_path: ["."]
+processors:
+  - type: smart
+renderer:
+  type: markdown
+  filename: README.md

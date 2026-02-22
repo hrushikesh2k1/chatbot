@@ -5,12 +5,14 @@ import re
 from datetime import datetime
 import random
 from dotenv import load_dotenv
+from flasgger import Swagger
 
 load_dotenv()
 import os
 
 #app name
 app = Flask(__name__)
+swagger = Swagger(app)
 
 # MongoDB setup
 client = MongoClient(os.getenv("MONGO_URI"))
@@ -170,6 +172,17 @@ def health():
 
 @app.route("/ask", methods=["POST"])
 def ask():
+    """
+    Ask chatbot a question
+    ---
+    parameters:
+      - name: question
+        in: body
+        required: true
+    responses:
+      200:
+        description: AI response
+    """
     data = request.get_json(silent=True) or {}
     question = data.get("question", "").strip()
 
