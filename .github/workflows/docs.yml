@@ -3,7 +3,7 @@ name: Auto Documentation Generator
 on:
   push:
     branches:
-      - main
+      - feature 
 
 jobs:
   generate-docs:
