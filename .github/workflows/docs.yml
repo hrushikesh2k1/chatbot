@@ -34,6 +34,11 @@ jobs:
       run: |
         pip install pydoc-markdown diagrams flasgger
 
+    - name: Create Documentation Directories
+      run: |
+        mkdir -p docs/code
+        mkdir -p docs/architecture
+
     - name: Generate Code Docs
       run: |
         pydoc-markdown
