@@ -2,11 +2,14 @@ name: Auto Documentation Generator
 
 permissions:
   contents: write
-  
+
 on:
   push:
     branches:
       - feature 
+    paths-ignore:
+      - 'README.md'
+      - 'architecture.png'
 
 jobs:
   generate-docs:
@@ -39,12 +42,16 @@ jobs:
       run: |
         python architecture.py
 
+    - name: Check for changes
+      id: verify_diff
+      run: |
+        git diff --quiet || echo "changed=true" >> $GITHUB_OUTPUT
+
     - name: Commit Updated Docs
+      if: steps.verify_diff.outputs.changed == 'true'
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
         git add .
-        git commit -m "Auto update documentation" || echo "No changes"
+        git commit -m "Auto update documentation"
         git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

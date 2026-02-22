@@ -5,4 +5,4 @@ processors:
   - type: smart
 renderer:
   type: markdown
-  filename: README.md
+  filename: docs/code-docs.md

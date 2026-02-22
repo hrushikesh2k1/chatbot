@@ -9,7 +9,12 @@ from diagrams.onprem.database import MongoDB
 from diagrams.azure.compute import VM
 from diagrams.azure.network import VirtualNetworks
 
-with Diagram("Chatbot Deployment Architecture", show=False):
+with Diagram(
+    name="chatbot-aks-runtime-architecture",
+    filename="docs/architecture/chatbot-runtime",
+    outformat="png",
+    show=False
+):
 
     user = Users("Client")
 
