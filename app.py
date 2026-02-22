@@ -10,7 +10,7 @@ from flasgger import Swagger
 load_dotenv()
 import os
 
-#app name
+# docs trigger
 app = Flask(__name__)
 swagger = Swagger(app)
 
