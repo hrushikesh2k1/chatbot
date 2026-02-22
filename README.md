@@ -1,3 +1,51 @@
+<a id="architecture"></a>
+
+# architecture
+
+<a id="architecture.Diagram"></a>
+
+## Diagram
+
+<a id="architecture.Cluster"></a>
+
+## Cluster
+
+<a id="architecture.Users"></a>
+
+## Users
+
+<a id="architecture.Nginx"></a>
+
+## Nginx
+
+<a id="architecture.Docker"></a>
+
+## Docker
+
+<a id="architecture.Pod"></a>
+
+## Pod
+
+<a id="architecture.Ingress"></a>
+
+## Ingress
+
+<a id="architecture.PV"></a>
+
+## PV
+
+<a id="architecture.MongoDB"></a>
+
+## MongoDB
+
+<a id="architecture.VM"></a>
+
+## VM
+
+<a id="architecture.VirtualNetworks"></a>
+
+## VirtualNetworks
+
 <a id="app"></a>
 
 # app
@@ -42,6 +90,10 @@
 
 ## load\_dotenv
 
+<a id="app.Swagger"></a>
+
+## Swagger
+
 <a id="app.os"></a>
 
 ## os
@@ -49,6 +101,10 @@
 <a id="app.app"></a>
 
 #### app
+
+<a id="app.swagger"></a>
+
+#### swagger
 
 <a id="app.client"></a>
 
@@ -140,4 +196,14 @@ def health()
 @app.route("/ask", methods=["POST"])
 def ask()
 ```
+
+Ask chatbot a question
+---
+parameters:
+  - name: question
+    in: body
+    required: true
+responses:
+  200:
+    description: AI response
 
