@@ -6,8 +6,6 @@ from datetime import datetime
 import random
 from dotenv import load_dotenv
 from flasgger import Swagger
-import time
-import logging
 import random
 
 load_dotenv()
@@ -17,11 +15,6 @@ import os
 app = Flask(__name__)
 swagger = Swagger(app)
 
-logging.basicConfig(
-    filename="app.log",
-    level=logging.INFO,
-    format="%(message)s"
-)
 
 # MongoDB setup
 client = MongoClient(os.getenv("MONGO_URI"))
@@ -61,15 +54,6 @@ def get_cached_response(question):
         return cached["answer"]
     return None
 
-def log_event(latency):
-    log = {
-        "latency": latency,
-        "error_count": random.randint(0, 2),
-        "retry_count": random.randint(0, 3),
-        "timeout_flag": random.choice([0, 1]),
-        "timestamp": datetime.now().isoformat()
-    }
-    logging.info(json.dumps(log))
 
 def generate_mock_ai_response(question):
     """Generate a mock AI response based on question content (FREE - no API needed)"""
@@ -191,8 +175,6 @@ def health():
 @app.route("/ask", methods=["POST"])
 def ask():
 
-    start = time.time()   # request start time
-
     data = request.get_json(silent=True) or {}
     question = data.get("question", "").strip()
 
@@ -214,14 +196,6 @@ def ask():
         if answer and answer != "I am still learning":
             cache_response(question, answer)
 
-    latency = time.time() - start
-
-    # Simulate occasional abnormal behaviour
-    if random.random() < 0.1:
-        time.sleep(2)
-
-    # Log operational behaviour
-    log_event(latency)
 
     return jsonify({"answer": answer, "source": source})
 

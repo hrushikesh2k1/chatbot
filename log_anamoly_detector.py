@@ -1,28 +1,43 @@
 import pandas as pd
-import json
+import numpy as np
 from sklearn.ensemble import IsolationForest
-from sklearn.preprocessing import StandardScaler
 
-logs =[]
+# Read log file
+log_file_path = "app.log"  # Update with your file path if needed
+with open(log_file_path, "r") as file:
+    logs = file.readlines()
 
-with open("app.log") as f:
-    for line in f:
-        try:
-            logs.append(json.loads(line))
-        except:
-            pass
+# Parse logs into a structured DataFrame
+data = []
+for log in logs:
+    parts = log.strip().split(" ", 3)  # Ensure the message part is captured fully
+    if len(parts) < 4:
+        continue  # Skip malformed lines
+    timestamp = parts[0] + " " + parts[1]
+    level = parts[2]
+    message = parts[3]
+    data.append([timestamp, level, message])
 
-df = pd.DataFrame(logs)
+df = pd.DataFrame(data, columns=["timestamp", "level", "message"])
 
-# Selecting the particular columns
-features = df[['latency', 'error_count','retry_count', 'timeout_flag']]
+# Convert timestamp to datetime format for sorting
+df["timestamp"] = pd.to_datetime(df["timestamp"])
 
-# Make all features come into same measurement scale
-scaler = StandardScaler()
-scaled = scaler.fit_transform(features)
+# Assign numeric scores to log levels
+level_mapping = {"INFO": 1, "WARNING": 2, "ERROR": 3, "CRITICAL": 4}
+df["level_score"] = df["level"].map(level_mapping)
 
-model = IsolationForest(contamination=0.05)
+# Add message length as a new feature
+df["message_length"] = df["message"].apply(len)
 
-df['anomaly'] = model.fit_predict(scaled)
+# AI Model for Anomaly Detection (Isolation Forest)
+model = IsolationForest(contamination=0.1, random_state=42)  # Lower contamination for better accuracy
+df["anomaly"] = model.fit_predict(df[["level_score", "message_length"]])
 
-print(df[df['anomaly']== -1])
+# Mark anomalies in a readable format
+df["is_anomaly"] = df["anomaly"].apply(lambda x: "❌ Anomaly" if x == -1 else "✅ Normal")
+
+# Print only detected anomalies
+anomalies = df[df["is_anomaly"] == "❌ Anomaly"]
+print("\n🔍 **Detected Anomalies:**\n", anomalies)
+
