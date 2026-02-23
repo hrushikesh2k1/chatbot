@@ -1,3 +1,47 @@
+<a id="log_anamoly_detector"></a>
+
+# log\_anamoly\_detector
+
+<a id="log_anamoly_detector.pd"></a>
+
+## pd
+
+<a id="log_anamoly_detector.json"></a>
+
+## json
+
+<a id="log_anamoly_detector.IsolationForest"></a>
+
+## IsolationForest
+
+<a id="log_anamoly_detector.StandardScaler"></a>
+
+## StandardScaler
+
+<a id="log_anamoly_detector.logs"></a>
+
+#### logs
+
+<a id="log_anamoly_detector.df"></a>
+
+#### df
+
+<a id="log_anamoly_detector.features"></a>
+
+#### features
+
+<a id="log_anamoly_detector.scaler"></a>
+
+#### scaler
+
+<a id="log_anamoly_detector.scaled"></a>
+
+#### scaled
+
+<a id="log_anamoly_detector.model"></a>
+
+#### model
+
 <a id="architecture"></a>
 
 # architecture
@@ -94,6 +138,18 @@
 
 ## Swagger
 
+<a id="app.time"></a>
+
+## time
+
+<a id="app.logging"></a>
+
+## logging
+
+<a id="app.random"></a>
+
+## random
+
 <a id="app.os"></a>
 
 ## os
@@ -150,6 +206,14 @@ def get_cached_response(question)
 
 Check if response is cached in MongoDB
 
+<a id="app.log_event"></a>
+
+#### log\_event
+
+```python
+def log_event(latency)
+```
+
 <a id="app.generate_mock_ai_response"></a>
 
 #### generate\_mock\_ai\_response
@@ -196,14 +260,4 @@ def health()
 @app.route("/ask", methods=["POST"])
 def ask()
 ```
-
-Ask chatbot a question
----
-parameters:
-  - name: question
-    in: body
-    required: true
-responses:
-  200:
-    description: AI response
 
