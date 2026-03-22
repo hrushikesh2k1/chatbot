@@ -1,47 +1,3 @@
-<a id="log_anamoly_detector"></a>
-
-# log\_anamoly\_detector
-
-<a id="log_anamoly_detector.pd"></a>
-
-## pd
-
-<a id="log_anamoly_detector.json"></a>
-
-## json
-
-<a id="log_anamoly_detector.IsolationForest"></a>
-
-## IsolationForest
-
-<a id="log_anamoly_detector.StandardScaler"></a>
-
-## StandardScaler
-
-<a id="log_anamoly_detector.logs"></a>
-
-#### logs
-
-<a id="log_anamoly_detector.df"></a>
-
-#### df
-
-<a id="log_anamoly_detector.features"></a>
-
-#### features
-
-<a id="log_anamoly_detector.scaler"></a>
-
-#### scaler
-
-<a id="log_anamoly_detector.scaled"></a>
-
-#### scaled
-
-<a id="log_anamoly_detector.model"></a>
-
-#### model
-
 <a id="architecture"></a>
 
 # architecture
@@ -90,6 +46,50 @@
 
 ## VirtualNetworks
 
+<a id="log_anamoly_detector"></a>
+
+# log\_anamoly\_detector
+
+<a id="log_anamoly_detector.pd"></a>
+
+## pd
+
+<a id="log_anamoly_detector.np"></a>
+
+## np
+
+<a id="log_anamoly_detector.IsolationForest"></a>
+
+## IsolationForest
+
+<a id="log_anamoly_detector.log_file_path"></a>
+
+#### log\_file\_path
+
+Update with your file path if needed
+
+<a id="log_anamoly_detector.data"></a>
+
+#### data
+
+<a id="log_anamoly_detector.df"></a>
+
+#### df
+
+<a id="log_anamoly_detector.level_mapping"></a>
+
+#### level\_mapping
+
+<a id="log_anamoly_detector.model"></a>
+
+#### model
+
+Lower contamination for better accuracy
+
+<a id="log_anamoly_detector.anomalies"></a>
+
+#### anomalies
+
 <a id="app"></a>
 
 # app
@@ -137,14 +137,6 @@
 <a id="app.Swagger"></a>
 
 ## Swagger
-
-<a id="app.time"></a>
-
-## time
-
-<a id="app.logging"></a>
-
-## logging
 
 <a id="app.random"></a>
 
@@ -205,14 +197,6 @@ def get_cached_response(question)
 ```
 
 Check if response is cached in MongoDB
-
-<a id="app.log_event"></a>
-
-#### log\_event
-
-```python
-def log_event(latency)
-```
 
 <a id="app.generate_mock_ai_response"></a>
 
