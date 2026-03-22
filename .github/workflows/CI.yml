@@ -16,7 +16,7 @@ on:
 
 jobs:
   build-test:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Fix workspace permissions
@@ -43,7 +43,7 @@ jobs:
 
   sonarqube-sast:
     name: SonarQube SAST Scan
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: build-test
 
     steps:
@@ -69,7 +69,7 @@ jobs:
 
   SCA:
     name: SCAN scan (Dependencies)
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: sonarqube-sast
     steps:
       - name: Fix workspace permissions
@@ -94,7 +94,7 @@ jobs:
           pip-audit -r requirements.txt
   dast:
     name: DAST Scan (OWASP ZAP)
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     needs: SCA   # or deploy-staging depending on where app runs
 
     steps:
@@ -124,7 +124,7 @@ jobs:
   deploy-dev:
     if: github.ref == 'refs/heads/feature'
     needs: dast
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     environment: development
     env:
       MONGO_URI: ${{ secrets.MONGO_URI }}
@@ -154,7 +154,7 @@ jobs:
   deploy-staging:
     if: github.ref == 'refs/heads/integration'
     needs: dast
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     environment: staging
     env:
       MONGO_URI: ${{ secrets.MONGO_URI }}
@@ -185,7 +185,7 @@ jobs:
   deploy-prod:
     if: github.ref == 'refs/heads/main'
     needs: dast
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     environment: production
     env:
       MONGO_URI: ${{ secrets.MONGO_URI }}
