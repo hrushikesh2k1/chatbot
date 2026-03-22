@@ -1,0 +1,64 @@
+name: Auto Documentation Generator
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - feature 
+    paths-ignore:
+      - 'README.md'
+      - 'architecture.png'
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Graphviz (OS Level)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y graphviz
+
+    - name: Install Python Dependencies
+      run: |
+        pip install pydoc-markdown diagrams flasgger
+
+    - name: Create Documentation Directories
+      run: |
+        mkdir -p docs/code
+        mkdir -p docs/architecture
+
+    - name: Generate Code Docs
+      run: |
+        pydoc-markdown
+
+    - name: Generate Architecture Diagram
+      run: |
+        python architecture.py
+
+    - name: Check for changes (tracked + untracked)
+      id: verify_diff
+      run: |
+        if [ -n "$(git status --porcelain docs/)" ]; then
+          echo "changed=true" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Commit Updated Docs
+      if: steps.verify_diff.outputs.changed == 'true'
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add .
+        git commit -m "Auto update documentation"
+        git push

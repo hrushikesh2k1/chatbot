@@ -5,11 +5,16 @@ import re
 from datetime import datetime
 import random
 from dotenv import load_dotenv
+from flasgger import Swagger
+import random
 
 load_dotenv()
 import os
 
+# docs trigger
 app = Flask(__name__)
+swagger = Swagger(app)
+
 
 # MongoDB setup
 client = MongoClient(os.getenv("MONGO_URI"))
@@ -169,6 +174,7 @@ def health():
 
 @app.route("/ask", methods=["POST"])
 def ask():
+
     data = request.get_json(silent=True) or {}
     question = data.get("question", "").strip()
 
@@ -190,9 +196,9 @@ def ask():
         if answer and answer != "I am still learning":
             cache_response(question, answer)
 
+
     return jsonify({"answer": answer, "source": source})
 
 
-
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=True, host="0.0.0.0",port=5000)
